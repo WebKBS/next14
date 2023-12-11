@@ -1,5 +1,6 @@
 'use client';
 
+import * as action from '@/actions/index';
 import { Editor } from '@monaco-editor/react';
 import type { Snippet } from '@prisma/client';
 import { useState } from 'react';
@@ -18,6 +19,8 @@ export default function SnippetEditForm({ snippet }: SnippetEditFormProps) {
     setCode(value);
   };
 
+  const editSnippetAction = action.editSnippet.bind(null, snippet.id, code);
+
   return (
     <div>
       <Editor
@@ -28,7 +31,9 @@ export default function SnippetEditForm({ snippet }: SnippetEditFormProps) {
         options={{ minimap: { enabled: false } }}
         onChange={handleEditorChange}
       />
-      Client component has snippet with title {snippet.title}
+      <form action={editSnippetAction}>
+        <button className="p-2 border rounded">Edit</button>
+      </form>
     </div>
   );
 }
