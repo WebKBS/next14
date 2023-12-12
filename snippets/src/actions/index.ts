@@ -24,27 +24,38 @@ export async function createSnippet(
   formState: { message: string },
   formData: FormData
 ) {
-  const title = formData.get('title');
-  const code = formData.get('code');
+  try {
+    const title = formData.get('title');
+    const code = formData.get('code');
 
-  if (typeof title !== 'string' || title.length < 3) {
-    return {
-      message: 'Title must be at least 3 characters long',
-    };
+    if (typeof title !== 'string' || title.length < 3) {
+      return {
+        message: 'Title must be at least 3 characters long',
+      };
+    }
+
+    if (typeof code !== 'string' || code.length < 10) {
+      return {
+        message: 'Code must be at least 10 characters long',
+      };
+    }
+
+    const snippet = await db.snippet.create({
+      data: {
+        title,
+        code,
+      },
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { message: error.message };
+    } else {
+      return {
+        message: 'Something went wrong',
+      };
+    }
   }
 
-  if (typeof code !== 'string' || code.length < 10) {
-    return {
-      message: 'Code must be at least 10 characters long',
-    };
-  }
-
-  const snippet = await db.snippet.create({
-    data: {
-      title,
-      code,
-    },
-  });
-
+  // redirect를 try catch안에서 사용하면 에러메세지를 출력한다.
   redirect(`/`);
 }
