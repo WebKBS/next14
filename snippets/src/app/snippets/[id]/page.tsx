@@ -46,3 +46,14 @@ export default async function SnippetShowPage(props: SnippetShowPageProps) {
     </div>
   );
 }
+
+// 이 부분에서는 static path를 생성하는 부분이다.
+export async function generateStaticParams() {
+  const snippets = await db.snippet.findMany();
+
+  return snippets.map((snippet) => {
+    return {
+      id: snippet.id.toString(),
+    };
+  });
+}
