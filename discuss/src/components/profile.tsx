@@ -6,7 +6,7 @@ export default function Profile() {
   const session = useSession();
 
   if (session.data?.user) {
-    return <div>From client: user is signed In</div>;
+    return <div>From client: {JSON.stringify(session.data.user)}</div>;
   }
 
   return <div>user is Not Signed in</div>;
