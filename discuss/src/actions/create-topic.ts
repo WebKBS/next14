@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import { z } from 'zod';
 
 const createTopicSchema = z.object({
@@ -16,6 +17,7 @@ interface CreateTopicFormState {
   errors: {
     name?: string[];
     description?: string[];
+    _form?: string[]; // _를 추가한 이유는, name이나 description과 같은 필드명과 충돌을 피하기 위함
   };
 }
 
@@ -33,6 +35,15 @@ export async function createTopic(
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  const session = await auth();
+  if (!session || !session.user) {
+    return {
+      errors: {
+        _form: ['로그인이 필요합니다.'],
+      },
     };
   }
 
