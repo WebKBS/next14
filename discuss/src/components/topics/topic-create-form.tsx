@@ -1,3 +1,4 @@
+'use client';
 import {
   Button,
   Input,
@@ -7,16 +8,23 @@ import {
   Textarea,
 } from '@nextui-org/react';
 
-import * as action from '@/actions';
+import * as actions from '@/actions';
+import { useFormState } from 'react-dom';
 
 export default function TopicCreateForm() {
+  const [formState, action] = useFormState(actions.createTopic, {
+    errors: {},
+  });
+
+  console.log(formState);
+
   return (
     <Popover placement="left">
       <PopoverTrigger>
         <Button color="primary">Create a Topic</Button>
       </PopoverTrigger>
       <PopoverContent>
-        <form action={action.createTopic}>
+        <form action={action}>
           <div className="flex flex-col gap-4 p-4 w-80">
             <h3 className="text-lg">Create a Topic</h3>
             <Input
@@ -24,12 +32,17 @@ export default function TopicCreateForm() {
               label="Name"
               labelPlacement="outside"
               placeholder="Name"
+              isInvalid={!!formState.errors.name} // Input UI 컴포넌트의 isInvalid prop에 에러가 있으면 true
+              errorMessage={formState.errors.name?.join(', ')}
             />
+
             <Textarea
               name="description"
               label="Description"
               labelPlacement="outside"
               placeholder="Descripbe your topic"
+              isInvalid={!!formState.errors.description}
+              errorMessage={formState.errors.description?.join(', ')}
             />
             <Button type="submit" color="primary">
               Create
