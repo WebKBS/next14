@@ -1,4 +1,4 @@
-import PostCreateForm from '@/components/post/post-create-form';
+import PostCreateForm from '@/components/posts/post-create-form';
 
 interface TopicShowPageProps {
   params: {
