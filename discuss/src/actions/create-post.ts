@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
+import { db } from '@/db';
 import { z } from 'zod';
 
 const createPostSchema = z.object({
@@ -17,10 +18,13 @@ interface CreatePostFormState {
 }
 
 export async function createPost(
+  slug: string,
   formState: CreatePostFormState,
   formData: FormData
 ): Promise<CreatePostFormState> {
   // 재검증 필요
+
+  console.log('슬러그:', slug);
 
   const result = createPostSchema.safeParse({
     title: formData.get('title'),
@@ -38,6 +42,18 @@ export async function createPost(
     return {
       errors: {
         _form: ['로그인이 필요합니다.'],
+      },
+    };
+  }
+
+  const topic = await db.topic.findFirst({
+    where: { slug },
+  });
+
+  if (!topic) {
+    return {
+      errors: {
+        _form: ['존재하지 않는 게시판입니다.'],
       },
     };
   }
