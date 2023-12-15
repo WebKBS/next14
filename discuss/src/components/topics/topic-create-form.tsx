@@ -10,6 +10,7 @@ import {
 
 import * as actions from '@/actions';
 import { useFormState } from 'react-dom';
+import FormButton from '../common/form-button';
 
 export default function TopicCreateForm() {
   const [formState, action] = useFormState(actions.createTopic, {
@@ -51,9 +52,7 @@ export default function TopicCreateForm() {
               </div>
             ) : null}
 
-            <Button type="submit" color="primary">
-              Create
-            </Button>
+            <FormButton>save</FormButton>
           </div>
         </form>
       </PopoverContent>
