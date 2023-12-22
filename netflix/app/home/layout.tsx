@@ -2,6 +2,7 @@
 
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import NavBar from '../components/NavBar';
 import { authOptions } from '../utils/auth';
 
 export default async function HomeLayout({
@@ -15,5 +16,12 @@ export default async function HomeLayout({
     return redirect('/login');
   }
 
-  return <div>{children}</div>;
+  return (
+    <>
+      <NavBar />
+      <main className="w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
+        {children}
+      </main>
+    </>
+  );
 }
