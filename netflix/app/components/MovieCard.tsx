@@ -8,6 +8,9 @@ interface iAppProps {
   watchList: boolean;
   watchListId: string;
   youtubeUrl: string;
+  year: number;
+  age: number;
+  time: number;
 }
 
 export default function MovieCard({
@@ -17,6 +20,9 @@ export default function MovieCard({
   watchList,
   watchListId,
   youtubeUrl,
+  age,
+  time,
+  year,
 }: iAppProps) {
   return (
     <>
@@ -37,6 +43,19 @@ export default function MovieCard({
             </Button>
           </form>
         )}
+      </div>
+      <div className="p-5 absolute bottom-0 left-0">
+        <h1 className="font-bold text-lg line-clamp-1">{title}</h1>
+        <div className="flex gap-x-2 items-center">
+          <p className="font-normal text-sm">{year}</p>
+          <p className="font-normal text-sm">{age} +</p>
+          <p className="font-normal border py-0.5 px-1 border-gray-200 rounded text-sm">
+            {time} h
+          </p>
+        </div>
+        <p className="line-clamp-1 text-sm text-gray-200 font-light">
+          {overview}
+        </p>
       </div>
     </>
   );
