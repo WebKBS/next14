@@ -11,6 +11,10 @@ export default async function HomeLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  console.log(session);
+  const username = session?.user?.name as string;
+  const useremail = session?.user?.email as string;
+  const userimage = session?.user?.image as string;
 
   if (!session) {
     return redirect('/login');
@@ -18,7 +22,7 @@ export default async function HomeLayout({
 
   return (
     <>
-      <NavBar />
+      <NavBar name={username} email={useremail} image={userimage} />
       <main className="w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
         {children}
       </main>

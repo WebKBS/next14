@@ -34,7 +34,15 @@ const links: linkProps[] = [
   },
 ];
 
-export default function NavBar() {
+export default function NavBar({
+  name,
+  email,
+  image,
+}: {
+  name: string;
+  email: string;
+  image: string;
+}) {
   const pathname = usePathname();
 
   return (
@@ -72,7 +80,7 @@ export default function NavBar() {
       <div className="flex items-center gap-x-8">
         <Search className="w-5 h-5 text-gray-300 cursor-pointer" />
         <Bell className="w-5 h-5 text-gray-300 cursor-pointer" />
-        <UserNav />
+        <UserNav name={name} email={email} image={image} />
       </div>
     </div>
   );

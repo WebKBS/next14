@@ -27,7 +27,7 @@ export default async function MovieVideo() {
         autoPlay
         muted
         loop
-        src={data?.videoSource}
+        src={data?.youtubeString}
         className="w-full absolute top-0 left-0 h-[60vh] object-cover -z-10 brightness-[60%]"
       ></video>
       <div className="absolute w-[90%] lg:w-[40%] mx-auto">

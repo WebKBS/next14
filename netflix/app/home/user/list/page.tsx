@@ -30,7 +30,16 @@ async function getData(userId: string) {
 
 export default async function WatchList() {
   const session = await getServerSession(authOptions);
-  const data = await getData('');
+  const data = await getData(session?.user?.email as string);
+  // console.log(data);
+
+  if (data.length === 0) {
+    return (
+      <div className="text-white text-4xl font-bold underline mt-10 px-5 sm:px-0">
+        Your watch list is empty
+      </div>
+    );
+  }
 
   return (
     <>
