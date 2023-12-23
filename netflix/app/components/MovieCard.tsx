@@ -1,5 +1,9 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Heart, PlayCircle } from 'lucide-react';
+import { useState } from 'react';
+import PlayVideoModal from './PlayVideoModal';
 
 interface iAppProps {
   title: string;
@@ -24,9 +28,11 @@ export default function MovieCard({
   time,
   year,
 }: iAppProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
-      <button className="-mt-14">
+      <button className="-mt-14" onClick={() => setOpen(true)}>
         <PlayCircle className="h-20 w-20" />
       </button>
       <div className="right-5 top-5 absolute z-10">
@@ -57,6 +63,17 @@ export default function MovieCard({
           {overview}
         </p>
       </div>
+      <PlayVideoModal
+        youtubeUrl={youtubeUrl}
+        key={movieId}
+        title={title}
+        overview={overview}
+        age={age}
+        release={year}
+        duration={time}
+        state={open}
+        chageState={setOpen}
+      />
     </>
   );
 }
