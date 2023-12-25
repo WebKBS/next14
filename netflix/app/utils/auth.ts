@@ -37,4 +37,7 @@ export const authOptions = {
       from: process.env.EMAIL_FROM,
     }),
   ],
+  session: {
+    maxAge: 60 * 60,
+  },
 } satisfies NextAuthOptions;

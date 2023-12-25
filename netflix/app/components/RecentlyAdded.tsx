@@ -5,31 +5,36 @@ import prisma from '../utils/db';
 import MovieCard from './MovieCard';
 
 async function getData(userId: string) {
-  const data = await prisma?.movie.findMany({
-    select: {
-      id: true,
-      title: true,
-      overview: true,
-      WatchLists: {
-        where: {
-          userId: userId,
+  let data;
+  try {
+    data = await prisma?.movie.findMany({
+      select: {
+        id: true,
+        title: true,
+        overview: true,
+        WatchLists: {
+          where: {
+            userId: userId,
+          },
         },
+        imageString: true,
+        youtubeString: true,
+        age: true,
+        release: true,
+        duration: true,
       },
-      imageString: true,
-      youtubeString: true,
-      age: true,
-      release: true,
-      duration: true,
-    },
 
-    orderBy: {
-      createdAt: 'desc',
-    },
+      orderBy: {
+        createdAt: 'desc',
+      },
 
-    // take: 4, // 가져올 데이터의 개수
-  });
-  // console.log(data);
+      // take: 4, // 가져올 데이터의 개수
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return data;
+  // console.log(data);
 }
 
 export default async function RecentlyAdded() {
@@ -37,7 +42,7 @@ export default async function RecentlyAdded() {
   const data = await getData(session?.user?.email as string);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-8 gap-6">
-      {data.map((movie) => (
+      {data?.map((movie) => (
         <div key={movie.id} className="relative h-48">
           <Image
             src={movie.imageString}
