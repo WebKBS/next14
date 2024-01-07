@@ -1,10 +1,20 @@
 import { getMeal } from '@/lib/meals';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import classes from './page.module.css';
 
 export default async function MealDetailsPage({ params }) {
   const meal = await getMeal(params.mealSlug);
   console.log(meal);
+
+  if (!meal) {
+    notFound();
+    return (
+      <main className="not-found">
+        <h1>요청하신 페이지를 찾을수 없습니다.</h1>
+      </main>
+    );
+  }
 
   meal.instructions = meal.instructions.replace(/\n/g, '<br />');
 
