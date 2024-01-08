@@ -1,4 +1,5 @@
 import sql from 'better-sqlite3';
+import fs from 'node:fs';
 import slugify from 'slugify';
 import xss from 'xss';
 
@@ -23,4 +24,30 @@ export async function saveMeal(meal) {
 
   meal.slug = slugify(meal.title, { lower: true });
   meal.instructions = xss(meal.instructions);
+
+  const extensions = meal.image.name.split('.').pop();
+  const fileName = `${meal.slug}.${extensions}`;
+
+  const stream = fs.createWriteStream(`public/images/${fileName}`);
+  const bufferedImage = await meal.image.arrayBuffer();
+
+  console.log('extension: ', extensions);
+  console.log('fileName: ', fileName);
+  console.log('stream: ', stream);
+  console.log('bufferedImage: ', bufferedImage);
+
+  stream.write(Buffer.from(bufferedImage), (error) => {
+    if (error) {
+      throw new Error('Saving image failed !');
+    }
+
+    meal.image = `/images/${fileName}`;
+
+    db.prepare(
+      `
+      INSERT INTO meals (title, summary, instructions, creator, creator_email, image, slug)
+      VALUES (@title, @summary, @instructions, @creator, @creator_email, @image, @slug)
+    `
+    ).run(meal);
+  });
 }

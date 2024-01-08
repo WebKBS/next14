@@ -1,5 +1,5 @@
 import ImagePicker from '@/components/meals/image-picker';
-import { shareMeal } from '@/lib/actgions';
+import { shareMeal } from '@/lib/actions';
 import classes from './page.module.css';
 
 export default function ShareMealPage() {

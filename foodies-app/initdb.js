@@ -199,3 +199,8 @@ async function initData() {
 }
 
 initData();
+
+async function deleteData() {
+  db.prepare('DELETE FROM meals WHERE id IN (11)').run();
+}
+deleteData();
