@@ -1,7 +1,13 @@
 import { getAvailableNewsYears } from '@/lib/news';
 import Link from 'next/link';
 
-const ArchivePage = () => {
+const FilteredNewsPage = ({
+  params: { filter },
+}: {
+  params: { filter: string };
+}) => {
+  console.log(filter);
+
   const links = getAvailableNewsYears();
 
   return (
@@ -19,4 +25,4 @@ const ArchivePage = () => {
   );
 };
 
-export default ArchivePage;
+export default FilteredNewsPage;
