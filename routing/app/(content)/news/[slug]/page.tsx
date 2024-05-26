@@ -1,10 +1,12 @@
-import { DUMMY_NEWS } from '@/dummy-news';
+import { getNewsItem } from '@/lib/news';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const NewsDetailPage = ({ params }: { params: { slug: string } }) => {
+const NewsDetailPage = async ({ params }: { params: any }) => {
   const newsSlug = params.slug;
-  const newsItem = DUMMY_NEWS.find((news) => news.id === newsSlug)!;
+  const newsItem = (await getNewsItem(newsSlug)) as any;
+
+  console.log(newsSlug);
 
   // console.log(DUMMY_NEWS);
 
@@ -13,7 +15,7 @@ const NewsDetailPage = ({ params }: { params: { slug: string } }) => {
   // }
 
   return (
-    <article>
+    <article className="news-article">
       <header>
         <Link href={`/news/${newsItem.slug}/image`}>
           <Image
@@ -21,6 +23,7 @@ const NewsDetailPage = ({ params }: { params: { slug: string } }) => {
             alt={newsItem.title}
             width={300}
             height={200}
+            className="w-full h-auto"
           />
         </Link>
         <h1>{newsItem.title}</h1>

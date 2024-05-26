@@ -1,13 +1,12 @@
-import { News } from '@/lib/news';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const NewsList = ({ news }: { news: News[] }) => {
+const NewsList = ({ news }: { news: any }) => {
   return (
     <ul className="news-list">
-      {news.map((newsItem) => (
+      {news.map((newsItem: any) => (
         <li key={newsItem.id}>
-          <Link href={`/news/${newsItem.id}`}>
+          <Link href={`/news/${newsItem.slug}`}>
             <Image
               src={`/images/news/${newsItem.image}`}
               alt={newsItem.title}

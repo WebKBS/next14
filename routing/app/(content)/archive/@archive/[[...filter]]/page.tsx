@@ -7,7 +7,7 @@ import {
 } from '@/lib/news';
 import Link from 'next/link';
 
-const FilteredNewsPage = ({
+const FilteredNewsPage = async ({
   params: { filter },
 }: {
   params: { filter: string };
@@ -19,15 +19,15 @@ const FilteredNewsPage = ({
   const selectedMonth = filter?.[1];
 
   let news: any;
-  let links = getAvailableNewsYears();
+  let links = (await getAvailableNewsYears()) as any;
 
   if (selectedYear && !selectedMonth) {
-    news = getNewsForYear(+selectedYear);
+    news = (await getNewsForYear(+selectedYear)) as any;
     links = getAvailableNewsMonths(+selectedYear);
   }
 
   if (selectedYear && selectedMonth) {
-    news = getNewsForYearAndMonth(+selectedYear, +selectedMonth);
+    news = await getNewsForYearAndMonth(+selectedYear, +selectedMonth);
     links = [];
   }
 
@@ -37,10 +37,12 @@ const FilteredNewsPage = ({
     newsContent = <NewsList news={news} />;
   }
 
+  const availableYears = await getAvailableNewsYears();
+
   if (
-    (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
+    (selectedYear && !availableYears.includes(selectedYear)) ||
     (selectedMonth &&
-      !getAvailableNewsMonths(+selectedYear).includes(+selectedMonth))
+      !getAvailableNewsMonths(selectedYear).includes(selectedMonth))
   ) {
     throw new Error('Invalid year');
   }
@@ -50,7 +52,7 @@ const FilteredNewsPage = ({
       <header id="archive-header">
         <nav>
           <ul>
-            {links.map((link) => {
+            {links.map((link: any) => {
               const href = selectedYear
                 ? `/archive/${selectedYear}/${link}`
                 : `/archive/${link}`;
