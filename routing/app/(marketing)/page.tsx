@@ -1,7 +1,7 @@
 import logo from '@/assets/logo.jpg';
 import Link from 'next/link';
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div id="home">
       <img src={logo.src} alt="A newspaper" />
