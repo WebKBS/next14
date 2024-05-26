@@ -12,7 +12,7 @@ const FilteredNewsPage = ({
 }: {
   params: { filter: string };
 }) => {
-  console.log(filter);
+  // console.log(filter);
 
   const selectedYear = filter?.[0];
 

@@ -6,7 +6,7 @@ const NewsDetailPage = ({ params }: { params: { slug: string } }) => {
   const newsSlug = params.slug;
   const newsItem = DUMMY_NEWS.find((news) => news.id === newsSlug)!;
 
-  console.log(DUMMY_NEWS);
+  // console.log(DUMMY_NEWS);
 
   // if (!newsItem) {
   //   return notFound();
