@@ -1,10 +1,10 @@
 'use server';
 
+import { uploadImage } from '@/lib/cloudinary';
 import { storePost } from '@/lib/posts';
 import { redirect } from 'next/navigation';
 
 export async function createPost(prevState: any, formData: FormData) {
-  'use server';
   const title = formData.get('title') as string;
   const image = formData.get('image') as File;
   const content = formData.get('content') as string;
@@ -37,8 +37,17 @@ export async function createPost(prevState: any, formData: FormData) {
     return { errors };
   }
 
+  let imageUrl: string;
+  try {
+    imageUrl = await uploadImage(image);
+  } catch (error) {
+    console.error('이미지 업로드 실패:', error);
+    // 필요한 경우 여기에서 반환하거나 에러를 던질 수 있습니다.
+    throw new Error('이미지 업로드 실패');
+  }
+
   await storePost({
-    imageUrl: '', // Assuming you will handle the image upload and get the URL separately
+    imageUrl: imageUrl,
     title,
     content,
     userId: 1,
