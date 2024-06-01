@@ -1,13 +1,15 @@
 import { redirect } from 'next/navigation';
 
-import { addMessage } from '@/lib/messages';
+import { revalidateTag } from 'next/cache';
 
 export default function NewMessagePage() {
   async function createMessage(formData: FormData) {
     'use server';
 
     const message = formData.get('message');
-    addMessage(message);
+    // addMessage(message);
+    // revalidatePath('/', 'layout'); // 모든 페이지의 캐시를 무효화함
+    revalidateTag('messages'); // messages 태그를 가진 모든 페이지의 캐시를 무효화함
     redirect('/messages');
   }
 
