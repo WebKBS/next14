@@ -1,13 +1,15 @@
-import { unstable_noStore } from 'next/cache';
+import { getMessages } from '@/lib/messages';
 
-export default async function MessagesLayout({
+export default function MessagesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  unstable_noStore();
-  const response = await fetch('http://localhost:8080/messages', {});
-  const messages = await response.json();
+  // unstable_noStore();
+  // const response = await fetch('http://localhost:8080/messages', {});
+  // const messages = await response.json();
+
+  const messages = getMessages();
   const totalMessages = messages.length;
 
   return (
