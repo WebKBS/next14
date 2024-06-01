@@ -4,6 +4,7 @@ import { useOptimistic } from 'react';
 
 import { togglePostLikeStatus } from '@/actions/posts';
 import { formatDate } from '@/lib/format';
+import Image from 'next/image';
 import LikeButton from './like-icon';
 
 interface PostProps {
@@ -19,11 +20,32 @@ interface PostProps {
   action: any;
 }
 
+interface ImageProps {
+  src: string;
+  quality?: number;
+  width: number;
+}
+
+function imageLoader(config: ImageProps) {
+  const urlStart = config.src.split('upload/')[0];
+  const urlEnd = config.src.split('upload/')[1];
+  const transformations = `w_200,q_${config.quality || 75}`;
+
+  return `${urlStart}upload/${transformations}/${urlEnd}`;
+}
+
 function Post({ post, action }: PostProps) {
   return (
     <article className="post">
       <div className="post-image">
-        <img src={post.image} alt={post.title} />
+        <Image
+          src={post.image}
+          fill
+          alt={post.title}
+          loader={imageLoader}
+          quality={50}
+          sizes="10vw"
+        />
       </div>
       <div className="post-content">
         <header>
