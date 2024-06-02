@@ -3,6 +3,7 @@
 import { useOptimistic } from 'react';
 
 import { togglePostLikeStatus } from '@/actions/posts';
+import logoImage from '@/assets/logo.png';
 import { formatDate } from '@/lib/format';
 import Image from 'next/image';
 import LikeButton from './like-icon';
@@ -35,8 +36,11 @@ function imageLoader(config: ImageProps) {
 }
 
 function Post({ post, action }: PostProps) {
+  console.log(logoImage);
   return (
     <article className="post">
+      <Image src={logoImage} alt={'나의 이미지'} width={100} />
+
       <div className="post-image">
         <Image
           src={post.image}
