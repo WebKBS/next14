@@ -1,5 +1,6 @@
 'use server';
 
+import { createAuthSession } from '@/lib/auth';
 import { hashUserPassword } from '@/lib/hash';
 import { createUser } from '@/lib/user';
 import { redirect } from 'next/navigation';
@@ -25,7 +26,9 @@ export async function signup(prevState: any, formData: FormData) {
   const hashedPassword = hashUserPassword(password);
 
   try {
-    await createUser({ email, password: hashedPassword });
+    const id = await createUser({ email, password: hashedPassword });
+    createAuthSession(id);
+    redirect('/training');
   } catch (error: any) {
     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
       return { errors: { email: '이미 사용 중인 이메일입니다.' } };
@@ -33,6 +36,4 @@ export async function signup(prevState: any, formData: FormData) {
 
     throw error;
   }
-
-  redirect('/training');
 }
