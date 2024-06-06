@@ -3,6 +3,7 @@
 import { createAuthSession } from '@/lib/auth';
 import { hashUserPassword } from '@/lib/hash';
 import { createUser } from '@/lib/user';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function signup(prevState: any, formData: FormData) {
@@ -28,6 +29,7 @@ export async function signup(prevState: any, formData: FormData) {
   try {
     const id = await createUser({ email, password: hashedPassword });
     createAuthSession(id);
+    console.log(cookies().getAll());
     redirect('/training');
   } catch (error: any) {
     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
