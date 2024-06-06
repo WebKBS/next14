@@ -12,3 +12,7 @@ export function createUser({ email, password }: User) {
 
   return result.lastInsertRowid;
 }
+
+export function getUserByEmail(email: string) {
+  return db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+}

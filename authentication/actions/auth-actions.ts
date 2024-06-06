@@ -1,9 +1,8 @@
 'use server';
 
-import { createAuthSession } from '@/lib/auth';
-import { hashUserPassword } from '@/lib/hash';
-import { createUser } from '@/lib/user';
-import { cookies } from 'next/headers';
+import { createAuthSession, destroyAuthSession } from '@/lib/auth';
+import { hashUserPassword, verifyPassword } from '@/lib/hash';
+import { createUser, getUserByEmail } from '@/lib/user';
 import { redirect } from 'next/navigation';
 
 export async function signup(prevState: any, formData: FormData) {
@@ -29,7 +28,6 @@ export async function signup(prevState: any, formData: FormData) {
   try {
     const id = await createUser({ email, password: hashedPassword });
     createAuthSession(id);
-    console.log(cookies().getAll());
     redirect('/training');
   } catch (error: any) {
     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
@@ -38,4 +36,38 @@ export async function signup(prevState: any, formData: FormData) {
 
     throw error;
   }
+}
+
+export async function login(prevState: any, formData: FormData) {
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser) {
+    return { errors: { email: '등록되지 않은 이메일입니다.' } };
+  }
+
+  const isValidPassword = verifyPassword(existingUser.password, password);
+
+  if (!isValidPassword) {
+    return { errors: { password: '비밀번호가 일치하지 않습니다.' } };
+  }
+
+  await createAuthSession(existingUser.id);
+  redirect('/training');
+}
+
+export async function auth(mode: string, prevState: any, formData: FormData) {
+  if (mode === 'login') {
+    return login(prevState, formData);
+  } else {
+    return signup(prevState, formData);
+  }
+}
+
+export async function logout() {
+  await destroyAuthSession();
+
+  redirect('/');
 }
